@@ -86,3 +86,22 @@
 ## 七、待补的文档
 
 隐藏验收用例不随仓库提供；页面配色与交互自定；相似阈值的其它取值、行内字符级差异、跨文件批量、按版本历史回溯都另立题目；更大规模与对抗性输入的预算没定。
+
+## 八、使用方式（实现交付）
+
+```bash
+# 输出映射 TSV（旧行号 → 新行号 或 deleted）到文件
+python3 -m lineanchor OLD NEW -o mapping.tsv
+
+# 同时生成自包含 HTML 核对报告（数据内联，双击即开）
+python3 -m lineanchor OLD NEW -o mapping.tsv --html report.html
+
+# 不加 -o 时 TSV 写到标准输出
+python3 -m lineanchor OLD NEW
+```
+
+- 库接口：`lineanchor.compute_mapping(old_lines, new_lines)` 返回
+  `(mapping, stats)`；`mapping` 每项是新行号（1 起）或 `None`（deleted）。
+- 报告示例：`out/07-mixed.html`（由 `07-mixed` 生成）。
+- 测试：`python3 -m unittest discover -s tests`。
+- 只依赖 Python 3 标准库；无构建步骤。
